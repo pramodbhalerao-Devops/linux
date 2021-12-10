@@ -1,0 +1,1093 @@
+1)CDPATH :
+If you are frequently performing cd to subdirectories of a specific parent
+directory, you can set the CDPATH to the parent directory and perform
+cd to the subdirectories without giving the parent directory path as
+explained below.
+
+[appscan@NIC-PAPSCAN1B-AC /]$ export CDPATH=/appscan/ELK
+[appscan@NIC-PAPSCAN1B-AC /]$ cd jdk
+/appscan/ELK/jdk
+
+To make this change permanent, add export CDPATH=/etc to your
+~/.bash_profile 
+
+Similar to the PATH variable, you can add more than one directory entry
+in the CDPATH variable, separating them with : , as shown below. 
+
+export CDPATH=.:~:/etc:/var 
+
+2)Grep Command :
+grep command is used to search files for a specific text.
+
+[appscan@NIC-PAPSCAN1B-AC ~]$ grep outgoingProxyHost  /appscan/config.properties
+##outgoingProxyHost =
+
+There are several lines in the /etc/password that doesn’t contain
+the word John. Only the first line of the output is shown below
+
+[appscan@NIC-PAPSCAN1B-AC ~]$ grep -v John /etc/passwd
+
+ How many lines matched the text pattern in a particular
+file? 
+
+[appscan@NIC-PAPSCAN1B-AC ~]$ grep -c outgoingProxyHost  /appscan/config.properties
+1
+
+How to search a text by ignoring the case? 
+[appscan@NIC-PAPSCAN1B-AC ~]$ grep -i outgoingProxyHost  /appscan/config.properties
+
+How do I search all subdirectories for a text matching a
+specific pattern? 
+[appscan@NIC-PAPSCAN1B-AC ~]$grep -ri john /home/users
+
+Regular expression :In grep command, caret Symbol ^ matches the expression at the start of
+a line.
+[appscan@NIC-PAPSCAN1B-AC ~]$ grep "^internal" /appscan/config.properties
+internalProxyHost =
+internalProxyPort =
+
+3) Find Command :
+
+How to find files containing a specific word in its name?
+ # find /etc -name "*mail*"
+ 
+How to find all the files greater than certain size?
+# find / -type f -size +100M 
+
+How to find files that are not modified in the last x
+number of days?
+[root@NIC-PAPSCAN1B-AC appscan]# find /usr/share/logstash/example/Logs  -mtime +20
+
+How to find files that are modified in the last x number of
+days? 
+# find . –mtime -2 
+
+How to delete all the archive files with extension *.tar.gz
+and greater than 100MB?
+[root@NIC-PAPSCAN1B-AC appscan]# find / -type f -name *.log
+# find / -type f -name *.tar.gz -size +100M -exec ls -l {}\; 
+# find / -type f -name *.tar.gz -size +100M -exec rm -f {}\;
+[root@NIC-PAPSCAN1B-AC appscan]# find /usr/share/logstash/example/Logs -type f -name *.log
+/usr/share/logstash/example/Logs/catalina.2021-09-27.log
+/usr/share/logstash/example/Logs/catalina.2021-10-07.log
+
+How to archive all the files that are not modified in the
+last x number of days?
+[root@NIC-PAPSCAN1B-AC appscan]# find /usr/share/logstash/example/Logs/ -type f -mtime +30 | xargs tar -cvf /usr/share/logstash/example/Logs/date_"+%Y.%m.%d-%H.%M.%S"_archive.tar
+# find /usr/share/logstash/example/Logs -type f -mtime +30 | xargs tar -cvf /usr/share/logstash/example/Logs 'date '+%d%m%Y'_archive.tar'
+
+4)Suppress Standard Output and Error Message :
+
+[root@NIC-PAPSCAN1B-AC appscan]# cat file.txt > /dev/null
+
+5) Join Command :
+$ cat employee.txt 
+$ cat bonus.txt
+$ join employee.txt bonus.txt
+
+6) Change the Case : 
+
+Convert a file to all upper-case
+
+$ cat employee.txt 
+100 Jason Smith 
+200 John Doe 
+300 Sanjay Gupta 
+400 Ashok Sharma 
+$ tr a-z A-Z < employee.txt 
+100 JASON SMITH 
+200 JOHN DOE 
+300 SANJAY GUPTA 
+400 ASHOK SHARMA
+Convert a file to all lower-case
+
+$ cat department.txt 
+100 FINANCE 
+200 MARKETING 
+300 PRODUCT DEVELOPMENT 
+400 SALES
+$ tr A-Z a-z < department.txt 
+100 finance 
+200 marketing 
+300 product development 
+400 sales
+
+7)Xargs Command : 
+xargs is a very powerful command that takes output of a command and pass it as argument of another command.
+find /usr/share/logstash/example/Logs/ -name "*.log" | xargs ls –l
+find /usr/share/logstash/example/Logs/ -name "*.conf" | xargs ls –l
+ 
+If you have a file with list of URLs that you would like to download, you
+can use xargs as shown below.
+# cat url-list.txt | xargs wget –c 
+
+Find out all the jpg images and archive it.
+ find /usr/share/logstash/example/Logs/ -name *.txt -type f -print | xargs tar -cvzf logs.tar.gz 
+ 
+8)Sort Command : 
+ 
+ $ sort names.txt
+ $ sort -r names.txt
+ Sort a colon delimited text file on 2nd field (employee_id) 
+ $ sort -t: -k 2 names.txt 
+ 
+9) Uniq Command : 
+1. When you have an employee file with duplicate entries, you can do
+the following to remove duplicates. 
+$ sort namesd.txt | uniq 
+$ sort –u namesd.txt
+$ sort namesd.txt | uniq –c
+$ sort namesd.txt | uniq –cd 
+ 2 Alex Jason:200:Sales 
+ 2 Emma Thomas:100:Marketing
+ 
+10)  Stat Command :
+Stat command can be used either to check the status/properties of a
+single file or the filesystem. 
+
+$ stat /etc/my.cnf 
+
+11) Display Total Connect Time of Users :
+ I’ve been logged in to the system for more than 6 hours
+today. On Dec 1st, I was logged in for about 1 hour.
+$ ac –d 
+
+Connect time for all the users 
+[root@NIC-PAPSCAN1B-AC appscan]# ac -p
+
+Connect time for a specific user
+[root@NIC-PAPSCAN1B-AC appscan]# ac -d appscan
+[root@NIC-PAPSCAN1B-AC appscan]# ac -d root
+
+12) At Command : 
+Using at command you can schedule a job to run at a particular date
+and time. For example, to execute the backup script at 10 a.m
+tomorrow, 
+
+$ at -f backup.sh 10 am tomorrow
+
+13) Watch Command : 
+To execute a command continuously at a certain interval, use watch
+command as shown below. 
+
+$ watch df -h
+
+14) SED (stream editor) : 
+Substitute Word “Linux” to “Linux-Unix” Using sed s// 
+in the output line “1. Linux-Unix Sysadmin, Linux
+Scripting etc” only first Linux is replaced by Linux-Unix. If no flags are
+specified the first match of line is replaced. 
+$ sed 's/Linux/Linux-Unix/' thegeekstuff.txt
+
+Substitute all Appearances of a Word Using sed s//g
+
+The below sed command replaces all occurrences of Linux to Linux-Unix
+using global substitution flag “g”. 
+$ sed 's/Linux/Linux-Unix/g' thegeekstuff.txt 
+
+15)Awk Introduction – Print Examples :
+Awk stands for the names of its authors “Aho, Weinberger, and Kernighan”
+The Awk is mostly used for pattern scanning and processing. It searches one or more files to see if they contain lines
+that matches with the specified patterns and then perform associated actions.
+
+• Awk views a text file as records and fields. 
+• Like common programming language, Awk has variables,
+conditionals and loops 
+• Awk has arithmetic and string operators. 
+• Awk can generate formatted reports 
+• Awk reads from a file or from its standard input, and outputs to
+its standard output. Awk does not get along with non-text files. 
+
+[appscan@NIC-PAPSCAN1B-AC ELK_old_bkp]$ awk '{print}' employee.txt
+
+1) Print the lines which match the given pattern. 
+ [appscan@NIC-PAPSCAN1B-AC ELK_old_bkp]$ awk '/Developer/{print}' employee.txt
+ output : 
+ 200 Jason Developer Technology $5,500
+
+2)Splitting a Line Into Fields
+[appscan@NIC-PAPSCAN1B-AC ELK_old_bkp]$ awk '{print $1}' employee.txt
+100
+200
+300
+400
+500
+[appscan@NIC-PAPSCAN1B-AC ELK_old_bkp]$ awk '{print $1,$4}' employee.txt
+100 Sales
+200 Technology
+300 Technology
+400 Marketing
+500 Technology
+3)To count the lines in a file:  
+
+$ awk 'END { print NR }' geeksforgeeks.txt
+
+4)Printing lines with more than 10 characters:  
+
+$ awk 'length($0) > 10' geeksforgeeks.txt 
+[appscan@NIC-PAPSCAN1B-AC ELK_old_bkp]$ awk '$1 > 200' employee.txt
+300 Sanjay Sysadmin Technology $7,000
+400 Nisha Manager Marketing $9,500
+500 Randy DBA Technology $6,000
+
+
+5)To find/check for any string in any specific column:
+$ awk '{ if($3 == "B6") print $0;}' geeksforgeeks.txt
+
+16) VIM : 
+
+1) Vim +N filename: Go to the Nth line of the file after opening it. 
+vim +10 /etc/passwd
+2)Vim +/pattern filename: Go to the particular pattern’s line inside the file,
+first occurrence from first. In the following example, it will open the
+README file and jump to the first occurrence of the word “install”. 
+vim +/install README
+3)Vim +?patten filename: Go to the particular pattern’s line inside the file,
+first occurrence from last. In the following example, it will open the
+README file and jump to the last occurrence of the word “bug”. 
+vim +?bug README
+
+17) Chmod :
+
+For example, do the following to give execute permission for
+the user irrespective of anything else: 
+$ chmod u+x filename
+Use comma to separate the multiple permission sets as shown below. 
+$ chmod u+r,g+x filename 
+The following example removes read and write permission for the user. 
+$ chmod u-rx filename
+
+Make permission for a file same as another file (using
+reference) 
+If you want to change a file permission same as another file, use the
+reference option as shown below. In this example, file2′s permission will
+be set exactly same as file1′s permission. 
+$ chmod --reference=file1 file2
+
+Apply the permission to all the files under a directory
+recursively 
+Use option -R to change the permission recursively as shown below. 
+$ chmod -R 755 directory-name/
+
+Change execute permission only on the directories (files
+are not affected) 
+On a particular directory if you have multiple sub-directories and files,
+the following command will assign execute permission only to all the
+sub-directories in the current directory (not the files in the current
+directory). 
+$ chmod u+X * 
+
+18) View Multiple Log Files in One Terminal :
+
+$ multi-tail.sh error_log access_log 
+
+or 
+
+[root@NIC-PAPSCAN1B-AC Logs]# tail -f catalina.2021-11-22.log -f nic_portal009.log 
+
+$ tail -f error_log
+
+19)Less Command :
+Less is similar to more command, but less allows both forward and
+backward movements. Moreover, less don’t require to load the whole file
+before viewing. Try opening a large log file in Vim editor and less —
+you’ll see the speed difference. 
+
+The navigation keys in less command are similar to Vim editor. This hack
+explains less command navigation and other operations which will make
+you a better command line warrior.
+
+[root@NIC-PAPSCAN1B-AC Logs]# less catalina.2021-11-22.log
+[root@NIC-PAPSCAN1B-AC Logs]# less catalina.2021-11-22.log
+
+Ctrl + F = forward one windows
+Ctrl + B = Backward one windows
+CTRL+D – forward half window 
+CTRL+U – backward half window
+G – go to the end of file 
+g – go to the start of file 
+
+20)Wget Examples 
+wget utility is the best option to download files from internet.
+
+Download Multiple Files / URLs Using Wget -i 
+$ cat > download-file-list.txt 
+URL1 
+URL2 
+URL3 
+URL4 
+Next, give the download-file-list.txt as argument to wget using -i option
+as shown below. 
+$ wget -i download-file-list.txt 
+
+21) SSH Commands and Tips
+
+$ ssh -l jsmith remotehost.example.com
+$ ssh -v -l jsmith remotehost.example.com
+
+22)Change OpenSSH Security Options :
+
+$ grep -i pubkey /etc/ssh/sshd_config 
+  #PubkeyAuthentication yes 
+
+Disable Root Login (PermitRootLogin) :
+
+By default you can ssh to the server as root. It is best not to allow root to
+login directly to the server. Instead, you should login to the system as
+your account and then do ‘su -’ to login as root.
+If you have multiple sysadmins in your organization, and if they all login
+to the server directly as root, you might not know which sysadmin
+logged in as root. Instead, if you disable login as root, sysadmins are
+forced to login as their account first, before they can do ‘su -’, this
+makes the auditing easier. 
+Add the following entry to sshd_config to disable root to login to the
+server directly. 
+
+$ vi /etc/ssh/sshd_config 
+PermitRootLogin no 
+
+Allow Only Specific Users or Groups (AllowUsers AllowGroups):
+
+By default anybody who is authenticated successfully are allowed to login. Instead you can restrict which users (or groups) 
+you allow to login to the system. This is helpful when you have created several user accounts on the
+system, but want only few of them to login. 
+This is also helpful when you are using NIS, openLDAP (or some other external system) for authentication. Every user in
+your company might have account on NIS, OpenLDAP etc. But, on a specific server you want  only few of them to login. 
+For example, on production system you want only sysadmins to login. 
+Add the following entry to the sshd_config file to allow only specific users to login to the system. 
+
+In the example below only ramesh, john and jason can login to this system. Usernames should be separated by
+space. 
+$ vi /etc/ssh/sshd_config 
+AllowUsers ramesh john jason
+
+Add the following entry to the sshd_config file to allow only the users who belong to a specific group to login.
+In the example below only users who belong to sysadmin and dba group can login to the system. 
+ 
+$ vi /etc/ssh/sshd_config 
+AllowGroups sysadmin dba
+
+Deny Specific Users or Groups (DenyUsers DenyGroups) :
+
+Add the following entry to the sshd_config file to deny specific users to login to the system. In the example below cvs, apache, jane cannot login
+to this system. Usernames should be separated by space. 
+
+$ vi /etc/ssh/sshd_config 
+DenyUsers cvs apache jane
+
+group denying :
+$ vi /etc/ssh/sshd_config 
+DenyGroups developers qa 
+
+Note: You can use combination of all the Allow and Deny directives. It is processed in this order: 
+DenyUsers, AllowUsers, DenyGroups, and finally AllowGroups 
+
+23)Change SSHD Port Number (Port) :
+
+By default ssh runs on port 22. Most of the attackers will check if a server is open on port 22, and will randomly use 
+brute force to login to the server using several username and password combination. If you change the port # to something 
+different, others need to know exactly what port to use to login to the server using ssh. The example
+below uses port 222 for ssh. 
+
+$ vi /etc/ssh/sshd_config 
+Port 222
+
+From your logs (/var/log/secure), if you see lot of invalid logins using ssh for accounts that don’t exist on your system, from the ip-address that
+you don’t recognize, it might be some brute-force attack. Those kind of ssh invalid login will stop, if you change the port number. 
+Please note that this causes little inconvenience to your team who login to the system, as they need to know both the ip-address and the port
+number. 
+
+24)Change Login Grace Time (LoginGraceTime)  :
+
+When you ssh to a server, you have 2 minutes to login. If you don’t successfully login within 2 minutes, ssh will disconnect. 
+2 minutes time to login successfully is too much. You should consider  changing it to 30 seconds, or may be 1 minute. 
+Add the following entry to the sshd_config file to change the login grace  time from 2 minutes to 1 minute.
+
+$ vi /etc/ssh/sshd_config 
+LoginGraceTime 1m
+
+25)Restrict the Interface (IP Address) to Login  (ListenAddress) :
+
+If you have multiple interfaces on the server that are configured to different ip-address, you might not want everybody to login to the server
+using all those ip-address.  Let us assume that you have the following 4 interfaces on the server: 
+• eth0 – 192.168.10.200 
+• eth1 – 192.168.10.201 
+• eth2 – 192.168.10.202 
+• eth3 – 192.168.10.203 
+By default ssh will listen on all of the above ip-addresses. If you want users to login only using ip-address 200 and 202, do the following in
+your sshd_config 
+
+$ vi /etc/ssh/sshd_config 
+ListenAddress 192.168.10.200 
+ListenAddress 192.168.10.202
+
+26)Disconnect SSH when no activity (ClientAliveInterval)  :
+
+Once you’ve successfully logged in to the system, you might want to get disconnected when there are no activities after x number of minutes.
+This is basically idle timeout.  In Bash, you can achieve this using TMOUT variable.
+
+ClientAliveCountMax – This indicates the total number of checkalive message sent by the ssh server without getting any
+response from the ssh client. Default is 3. 
+ClientAliveInterval – This indicates the timeout in seconds. After x number of seconds, ssh server will send a message to the client
+asking for response. Deafult is 0 (server will not send message to client to check.).
+If you want ssh client to exit (timeout) automatically after 10 minutes
+(600 seconds), modify the sshd_config file and set the following two
+parameters as shown below. 
+
+$ vi /etc/ssh/sshd_config 
+ClientAliveInterval 600 
+ClientAliveCountMax 0
+
+27) Date Manipulation:
+To change the system date use: 
+# date {mmddhhmiyyyy.ss} 
+
+For example, to set system date to Jan 31st 2009, 10:19 p.m, 53
+seconds 
+# date 013122192009.53
+
+You can also change system date using set argument as shown below. 
+# date 013122192009.53 
+# date +%Y%m%d -s "20090131" 
+# date -s "01/31/2009 22:19:53" 
+# date -s "31 JAN 2009 22:19:53" 
+# date set="31 JAN 2009 22:19:53"
+
+To set the time only: 
+# date +%T -s "22:19:53" 
+# date +%T%p -s "10:19:53PM" 
+
+28)Set Hardware Date and Time
+# hwclock –systohc 
+# hwclock --systohc –utc 
+
+Check the clock file to verify whether the system is set for UTC: 
+# cat /etc/sysconfig/clock 
+ZONE="America/Los_Angeles" 
+UTC=false 
+ARC=false
+
+29). Display Date and Time in a Specific Format :
+$ date 
+Thu Jan 1 08:19:23 PST 2009 
+$ date --date="now" 
+Thu Jan 1 08:20:05 PST 2009 
+$ date --date="today" 
+Thu Jan 1 08:20:12 PST 2009 
+$ date --date='1970-01-01 00:00:01 UTC +5 hours' +%s 
+18001 
+$ date '+Current Date: %m/%d/%y%nCurrent Time:%H:%M:%S' 
+Current Date: 01/01/09 
+Current Time:08:21:41 
+$ date +"%d-%m-%Y" 
+01-01-2009 
+$ date +"%d/%m/%Y" 
+01/01/2009 
+$ date +"%A,%B %d %Y" 
+Thursday,January 01 2009
+
+30)Display Past Date and Time :
+
+$ date --date='3 seconds ago' 
+Thu Jan 1 08:27:00 PST 2009 
+$ date --date="1 day ago" 
+Wed Dec 31 08:27:13 PST 2008 
+$ date --date="1 days ago" 
+Wed Dec 31 08:27:18 PST 2008 
+$ date --date="1 month ago" 
+Mon Dec 1 08:27:23 PST 2008 
+$ date --date="1 year ago" 
+Tue Jan 1 08:27:28 PST 2008 
+$ date --date="yesterday" 
+Wed Dec 31 08:27:34 PST 2008 
+$ date --date="10 months 2 day ago" 
+Thu Feb 28 08:27:41 PST 2008
+
+31)Display Future Date and Time :
+$ date 
+Thu Jan 1 08:30:07 PST 2009 
+$ date --date='3 seconds' 
+Thu Jan 1 08:30:12 PST 2009 
+$ date --date='4 hours' 
+Thu Jan 1 12:30:17 PST 2009 
+$ date --date='tomorrow' 
+Fri Jan 2 08:30:25 PST 2009 
+$ date --date="1 day" 
+Fri Jan 2 08:30:31 PST 2009 
+$ date --date="1 days" 
+Fri Jan 2 08:30:38 PST 2009
+$ date --date='1 month' 
+Sun Feb 1 08:30:48 PST 2009 
+$ date --date='1 week' 
+Thu Jan 8 08:30:53 PST 2009 
+$ date --date="2 months" 
+Sun Mar 1 08:30:58 PST 2009 
+$ date --date="2 years" 
+Sat Jan 1 08:31:03 PST 2011 
+$ date --date="next day" 
+Fri Jan 2 08:31:10 PST 2009 
+$ date --date="-1 days ago" 
+Fri Jan 2 08:31:15 PST 2009 
+$ date --date="this Wednesday" 
+Wed Jan 7 00:00:00 PST 2009 
+
+32)PS1, PS2, PS3, PS4 and PROMPT_COMMAND :
+
+33) Archive and Compression :
+
+1)Zip Command Basics :
+How to zip multiple files?
+# zip var-log-files.zip /var/log/*
+
+2)How to unzip a *.zip compressed file?
+# unzip var-log.zip
+3)To see a detailed output during unzip pass the –v option as shown below.
+# unzip -v var-log.zip
+# unzip -l var-log.zip 
+
+ Zip Command Advanced Compression:
+# zip var-log-files-default.zip /var/log/* 
+# zip -0 var-log-files-0.zip /var/log/* 
+# zip -9 var-log-files-9.zip /var/log/* 
+
+Validate a zip archive:
+# unzip -t var-log.zip
+
+Password Protection of Zip files :
+
+# zip -P mysecurepwd var-log-protected.zip /var/log/*
+
+when you are performing the compression interactively on the command-line, you don’t want the
+password to be visible in the history. So, use the option –e as shown below to assign the password.
+
+# zip -e var-log-protected.zip /var/log/*
+
+When you are uncompressing a password protected file, it will ask for the password as shown below. 
+# unzip var-log-protected.zip
+
+32)Tar Command Examples :
+1)How can I create a single backup file of all files and subdirectories under my home directory? 
+# tar cvf /tmp/my_home_directory.tar /home/jsmith 
+2)How do I view all the files inside the tar archive? 
+# tar tvf /tmp/my_home_directory.tar
+3)How do I extract all the files from a tar archive? 
+# tar xvf /tmp/my_home_directory.tar
+4)How do I extract tar.gz files to a specific directory? 
+# tar xvfz /tmp/my_home_directory.tar.gz –C /home/ramesh
+
+33) History Related Environment Variables :
+Clear all the previous history using option -c
+# history -c
+# history | more
+# history | tail -4 
+
+Erase duplicates across the whole history using HISTCONTROL 
+# export HISTCONTROL=erasedups 
+# pwd 
+# service httpd stop 
+# history | tail -3
+Force history not to remember a particular command using HISTCONTROL 
+# export HISTCONTROL=ignorespace 
+# ls –ltr 
+# pwd 
+# service httpd stop 
+# history | tail -3 
+
+==========================================================================
+System Administration Tasks
+=============================================================================
+1)Partition Using fdisk :
+
+Create a partition :
+
+# fdisk /dev/sda 
+Verify that the partition got created successfully :
+# fdisk /dev/sda
+
+Format a Partition Using mke2fsk  :
+
+After partitioning the disks, it is still not ready for usage, as we need to
+format the disk. At this stage, if you try to view the disk information, it
+will give the following error message indicating that no valid superblock
+is present.
+# tune2fs -l /dev/sda1 
+
+To format the disk, use mke2fs as shown below. 
+# mke2fs /dev/sda1
+
+Mount a Partition :
+After creating a partition and formatting, you can mount it to a mount point. 
+
+First create a directory where the partition should be mounted. 
+# mkdir /home/database 
+
+Mount the file system. 
+# mount /dev/sda1 /home/database 
+
+To automatically mount the filesystem after the reboot, add the following entry to the /etc/fstab 
+/dev/sda1 /home/database ext3 defaults 0 2 
+
+Fine Tune a Partition Using tune2fs 
+Use the tune2fs –l /dev/sda1 to view the filesystem information as shown
+below. 
+# tune2fs -l /dev/sda1
+
+2) Create a New User : 
+
+Add a new user – Basic method 
+Specify only the user name. 
+# useradd jsmith 
+
+Add a new user with additional Parameter 
+You can also specify the following parameter to the useradd 
+• -c : Description about the user. 
+• -e : expiry date of the user in mm/dd/yy format 
+# adduser -c "John Smith - Oracle Developer" -e 12/31/09 jsmith 
+
+Verify that the user got added successfully. 
+# grep jsmith /etc/passwd 
+jsmith:x:510:510:John Smith - Oracle Developer:/home/jsmith:/bin/bash
+
+Change the user password :
+# passwd jsmith
+
+How to identify the default values used by useradd? 
+# useradd –D
+
+3)Create a New Group :
+
+Create a new developer group
+# groupadd developers
+
+Validate that the group was created successfully. 
+# grep developer /etc/group 
+  developers:x:511: 
+
+[root@NIC-PAPSCAN1B-AC tmp]# grep appscan /etc/group
+appscan:x:1001:
+
+4)Add an user to an existing group :
+
+You cannot use useradd to modify an existing user, as you’ll get the
+following error message. 
+# useradd -G developers jsmith 
+useradd: user jsmith exists 
+# usermod -g developers jsmith
+
+5)Validate the users group was modified successfully
+# grep jsmith /etc/passwd 
+# id jsmith 
+# grep jsmith /etc/group
+
+5) Setup SSH Passwordless Login in OpenSSH :
+
+You can login to a remote Linux server without entering password in 3 simple steps using ssky-keygen and ssh-copy-id as explained in this
+example.
+
+ssh-keygen creates the public and private keys. ssh-copy-id copies the local-host’s public key to the remote-host’s authorized_keys file. 
+sshcopy-id also assigns proper permission to the remote-host’s home,~/.ssh, and ~/.ssh/authorized_keys.
+
+Step 1: Create public and private keys using ssh-key-gen on local-host :
+jsmith@local-host$ ssh-keygen
+
+Generating public/private rsa key pair. 
+Enter file in which to save the key
+(/home/jsmith/.ssh/id_rsa):[Enter key] 
+Enter passphrase (empty for no passphrase): [Press enter
+key] 
+Enter same passphrase again: [Pess enter key] 
+Your identification has been saved in
+/home/jsmith/.ssh/id_rsa. 
+Your public key has been saved in
+/home/jsmith/.ssh/id_rsa.pub. 
+The key fingerprint is: 
+33:b3:fe:af:95:95:18:11:31:d5:de:96:2f:f2:35:f9
+jsmith@local-host 
+
+Step 2: Copy the public key to remote-host using sshcopy-id :
+jsmith@local-host$ ssh-copy-id -i ~/.ssh/id_rsa.pub remote-host 
+jsmith@remote-host’s password: 
+Now try logging into the machine, with “ssh ‘remote-host’”, and check in: 
+.ssh/authorized_keys to make sure we haven’t added extra
+keys that you weren’t expecting. 
+
+Note: ssh-copy-id appends the keys to the remote-host’s .ssh/authorized_key.
+
+Step 3: Login to remote-host without entering the password :
+
+jsmith@local-host$ ssh remote-host 
+ Last login: Sun Nov 16 17:22:33 2008 from 192.168.1.2 
+[Note: SSH did not ask for password.] 
+jsmith@remote-host$ [Note: You are on remote-host here]
+
+6) Crontab Examples :
+
+How to add a job to the cron? 
+# crontab –e 
+0 5 * * * /root/bin/backup.sh
+This will execute /root/bin/backup.sh at 5 a.m every day. 
+
+1. Run at 12:01 a.m. 1 minute after midnight everyday. This is a good
+time to run backup when the system is not under load. 
+1 0 * * * /root/bin/backup.sh 
+2. Run backup every weekday (Mon – Fri) at 11:59 p.m. 
+ 59 11 * * 1,2,3,4,5 /root/bin/backup.sh 
+Following will also do the same. 
+59 11 * * 1-5 /root/bin/backup.sh 
+3. Execute the command every 5 minutes. 
+*/5 * * * * /root/bin/check-status.sh 
+4. Execute at 1:10 p.m on 1st of every month 
+10 13 1 * * /root/bin/full-backup.sh 
+5. Execute 11 p.m on weekdays. 
+0 23 * * 1-5 /root/bin/incremental-backup.sh
+Crontab Options 
+The following are the available options with crontab: 
+• crontab –e : Edit the crontab file. This will create a crontab, if it
+doesn’t exist
+• crontab –l : Display the crontab file. 
+• crontab -r : Remove the crontab file. 
+• crontab -ir : This will prompt user before deleting a crontab
+
+7)Linux Parted Command Examples :
+
+# parted 
+Display all Partitions Using print :
+
+
+8) Rsync Command Examples :
+rsync stands for remote sync. rsync is used to perform the backup operation in UNIX / Linux.rsync utility is used to 
+synchronize the files and directories from one location to another in an effective way. Backup location could be on local
+server or on remote server. 
+Important features of rsync 
+• Speed: First time, rsync replicates the whole content between
+the source and destination directories. Next time, rsync transfers
+only the changed blocks or bytes to the destination location,
+which makes the transfer really fast. 
+• Security: rsync allows encryption of data using ssh protocol
+during transfer. 
+• Less Bandwidth: rsync uses compression and decompression of
+data block by block at the sending and receiving end
+respectively. So the bandwidth used by rsync will be always less
+compared to other file transfer protocols. 
+• Privileges: No special privileges are required to install and
+execute rsync
+$ rsync options source destination
+
+Synchronize Two Directories in a Local Server:
+$ rsync -zvr /var/opt/installation/inventory/ /root/temp
+Synchronize Only One File :
+$ rsync -v /var/lib/rpm/Pubkeys /root/temp/
+Synchronize Files From Local to Remote :
+$ rsync -avz /root/temp/ thegeekstuff@192.168.200.10:/home/thegeekstuff/temp/
+Synchronize Files From Remote to Local :
+$ rsync -avz /root/temp/ thegeekstuff@192.168.200.10:/home/thegeekstuff/temp/
+
+9)IPTables Rules Examples ;
+Delete Existing Rules :
+Before you start building new set of rules, you might want to clean-up all ,the default rules, and existing rules. Use the iptables flush command as
+shown below to do this. 
+iptables -F 
+(or) 
+iptables --flush 
+Set Default Chain Policies :
+The default chain policy is ACCEPT. Change this to DROP for all INPUT,
+FORWARD, and OUTPUT chains as shown below. 
+iptables -P INPUT DROP 
+iptables -P FORWARD DROP 
+iptables -P OUTPUT DROP
+Block a Specific ip-addres :
+BLOCK_THIS_IP="x.x.x.x" 
+iptables -A INPUT -s "$BLOCK_THIS_IP" -j DROP 
+
+Allow ALL Incoming SSH :
+The following rules allow ALL incoming ssh connections on eth0
+interface. 
+iptables -A INPUT -i eth0 -p tcp --dport 22 -m state
+--state NEW,ESTABLISHED -j ACCEPT 
+iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state
+--state ESTABLISHED -j ACCEPT 
+Allow Incoming SSH only from a Specific Network 
+The following rules allow incoming ssh connections only from
+192.168.100.X network. 
+iptables -A INPUT -i eth0 -p tcp -s 192.168.100.0/24
+--dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT 
+iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state
+--state ESTABLISHED -j ACCEPT 
+In the above example, instead of /24, you can also use the full subnet
+mask. i.e “192.168.100.0/255.255.255.0″. 
+
+10)Install Packages :
+On some Linux distributions, yum is the default package manager. 
+Yum Command Examples(YUM : yellowdog Updater modified) :
+1)Install a package using yum install :
+To install a package, do ‘yum install packagename’. This will also identify
+the dependencies automatically and install them. 
+The following example installs postgresql package. 
+# yum install postgresql.x86_64 
+or 
+# yum -y install postgresql.x86_64
+
+2)Uninstall a package using yum remove  :
+To remove a package (along with all its dependencies), use ‘yum remove
+package’ as shown below. 
+# yum remove postgresql.x86_64
+
+3)Upgrade an existing package using yum update 
+If you have a older version of a package, use ‘yum update package’ to
+upgrade it to the latest current version. This will also identify and install
+all required dependencies. 
+# yum update postgresql.x86_64
+
+4)Search for a package to be installed using yum search :
+# yum search firefox
+
+5)Display additional information about a package using yum info :
+[appscan@NIC-PAPSCAN1B-AC ~]$ yum info firefox.x86_64
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+Repodata is over 2 weeks old. Install yum-cron? Or run: yum makecache fast
+Installed Packages
+Name        : firefox
+Arch        : x86_64
+Version     : 38.3.0
+Release     : 2.el7_1
+Size        : 131 M
+Repo        : installed
+From repo   : anaconda
+Summary     : Mozilla Firefox Web browser
+URL         : http://www.mozilla.org/projects/firefox/
+License     : MPLv1.1 or GPLv2+ or LGPLv2+
+Description : Mozilla Firefox is an open-source web browser, designed for standards
+            : compliance, performance and portability.
+6)RPM Command Examples :
+RPM command is used for installing, uninstalling, upgrading, querying,listing, and checking RPM packages on your Linux system. 
+RPM stands for Red Hat Package Manager. 
+With root privilege, you can use the rpm command with appropriate options to manage the RPM software packages.
+rpm command and options 
+• -i : install a package 
+• -v : verbose 
+• -h : print hash marks as the package archive is unpacked. 
+
+1)Installing a RPM package Using rpm -ivh :
+RPM filename has packagename, version, release and architecture name.
+
+# rpm -ivh MySQL-client-3.23.57-1.i386.rpm 
+
+2)Query all the RPM Packages using rpm -qa 
+You can use rpm command to query all the packages installed in your
+system. 
+• -q query operation 
+• -a queries all installed packages
+[appscan@NIC-PAPSCAN1B-AC ~]$ rpm -qa
+[appscan@NIC-PAPSCAN1B-AC ~]$ rpm -qa | grep logstash
+logstash-7.15.0-1.x86_64
+[appscan@NIC-PAPSCAN1B-AC ~]$ rpm -q logstash
+logstash-7.15.0-1.x86_64
+# rpm -qa --queryformat '%{name-%{version}-%{release} %{size}\n'
+# rpm -qf /usr/bin/mysqlaccess
+Locate documentation of a package that owns file using rpm -qdf 
+# rpm -qdf /usr/bin/mysqlaccess
+
+List all the Files in a Package using rpm -qlp
+• -i : view information about an rpm 
+• -p : specify a package name
+• q : query the rpm file 
+• l : list the files in the package 
+• p : specify the package name 
+# rpm -qip MySQL-client-3.23.57-1.i386.rpm 
+
+List the Dependency Packages using rpm -qRP 
+To view the list of packages on which this package depends,
+# rpm -qRp MySQL-client-3.23.57-1.i386.rpm 
+
+7)apt-* Command Examples :
+
+8)System Monitoring and Performance :
+
+1)Free Command : free command displays all the necessary information about system physical (RAM) and swap memory.
+
+[appscan@NIC-PAPSCAN1B-AC ~]$ free -k
+              total        used        free      shared  buff/cache   available
+Mem:       12124484     9048432      173496      479784     2902556     2213492
+Swap:      16777212      660516    16116696
+[appscan@NIC-PAPSCAN1B-AC ~]$ free -m
+              total        used        free      shared  buff/cache   available
+Mem:          11840        8837         167         468        2836        2160
+Swap:         16383         645       15738
+[appscan@NIC-PAPSCAN1B-AC ~]$ free -g
+              total        used        free      shared  buff/cache   available
+Mem:             11           8           0           0           2           2
+Swap:            15           0          15
+
+2)Top : top command displays real time information about various performance metrics of the system such as CPU Load, 
+Memory Usage, Processes list etc. 
+
+[appscan@NIC-PAPSCAN1B-AC ~]$ top
+
+3)Df Command :df command (disk free) displays the amount of total and free disk space available on the mounted filesystems. 
+# df -h
+# df -Tha
+
+4)Du Command : du command (disk usage) will print the file space usage for a particular directory and its subdirectories. 
+In the following example, option -s stands for summary only. i.e it displays only the total size of /home/jsmith and not the individual sizes
+of all the subdirectories inside the /home/jsmith. Option -h displays the information in a human readable format. i.e K for KB, M for MB and G for
+GB. The ~ indicates the user home directory. This command is same as “du -sh /home/jsmith”
+How much space is taken by my home directory and all its subdirectories? 
+[appscan@NIC-PAPSCAN1B-AC ~]$ du -sh
+357M    .
+[appscan@NIC-PAPSCAN1B-AC ~]$  du -sh ~
+357M    /home/appscan
+
+5)Lsof Commands :Lsof stands for ls open files, which will list all the open files in the
+system. The open files include network connection, devices and directories. 
+# lsof
+# lsof | more
+# lsof | wc -l 
+# lsof -u appscan
+# lsof -u root | wc -l
+
+List Users of a particular file :
+# lsof /bin/vi
+
+6)Vmstat Command 
+For a typical performance monitoring all you need is only vmstat
+command. This display memory, swap, IO, system and cpu performance
+information. 
+The following command executes vmstat every 1 second for 100 times. 
+# vmstat 1 100
+
+9)Netstat Command : Netstat command displays the network related information such as network connections, routing tables, interface statistics.
+# netstat –an 
+# netstat –-route 
+
+10)Sysctl Command 
+Linux kernel parameter can be changed on the fly using sysctl
+command. Sysctl helps to configure the Linux kernel parameters during
+runtime. 
+# sysctl –a
+# sysctl –p
+
+11)Nice Command :
+Kernel decides how much processor time is required for a process based on the nice value. Possible nice value range is: -20 to 20. A process that
+has a nice value of -20 is very high priority. The process that has a nice value of 20 is very low priority. 
+Use ps axl to display the nice value of all running process as shown
+below. 
+# ps axl
+
+12)Renice Command 
+Renice alters the scheduling priority of a running process. 
+ $ ps axl | grep nice-test
+ 
+13)Kill Command :kill command can be used to terminate a running process. Typically this
+command is used to kill processes that are hanging and not responding
+# ps aux | grep httpd
+
+14) Ps Command :
+ps command (process status) will display snapshot information of all active processes. 
+
+ps command (process status) will display snapshot information of all
+active processes. 
+# ps aux | more
+
+15)Sar Command :
+Sar commands comes with the sysstat package. Make sure sysstat is
+installed. If you don’t have sar installed on your system, get it from
+Sysstat project. 
+Sar is an excellent monitoring tool that displays performance data of
+pretty much every resource of the system including CPU, memory, IO,
+paging, networking, interrupts etc.,
+
+# sar –u
+# sar –d
+# sar -n DEV | more
+
+16)Power-off the machine. 
+#shutdown
+#shutdown -h now
+#shutdown -h +10  #Power-off the machine after 10 minutes.
+#echo $PWD
+#echo $OLDPWD     #Print previous working directory.
+#sudo reboot      #Power off or reboot the Operating system.
+#ls -s            #List the size of files and directories.
+#uptime           #Tells you how long the system has been running.
+#date -- set 1998-11-02  #Set current date as 02 Nov 1988
+#ifconfig         #View and change the configuration of the network interfaces on the system.
+#rm -r *          #Delete every file and every directory.
+#top              #Provides a quick overview of the currently running processes.
+#service network status #Check the status of the network services.
+#Start the network service   #Start the network service 
+#w   #Report information about the users currently on the machine and their processes
+#lscpu           #Displays CPU architecture information (such as number of CPUs, threads, cores, sockets, and more).
+#nproc            #Displays the number of processing units available to the current process.
+#lsblk           #Report information about storage devices such as hard disks, flash drives etc.
+#last -1 username #Tells when the user last logged on and off and from where.
+#cd ../..      #Takes you two folders back
+#last username #Lists your last logins.
+eg.#last appscan 
+   #last root
+
+#whoami    #Display Who you are logged in as.
+#uname -v   #Print the kernel version
+#uname -o    #Print the operating system.
+#uname -m    #Report the machine hardware name.
+#uname -n    #Report the network node hostname.
+#netstat -a  #Display all port connections (both TCP and UDP)
+#netstat -at #Display only TCP (Transmission Control Protocol) port connections.
+#netstat -I     #Display all active listening ports
+#netstat -It   #Display all active listening TCP ports.
+#netstat -lu   #Display all active listening TCP ports.
+#id           # Reveal all the information about the current user (user id, username, group id, group name etc.)
+#id root   #Reveal all the information about the user "root1" (user id, username, group id, group name etc.
+#arch       #Print the machine's architecture.
+#fc-list      #Display the list of available fonts.
+#mkdir mydir1 mydir2 #Create two directories (mydir1, mydir2)
+#yum install httpd   #install apache (CentOS/Linux).
+#yum update httpd      #upgrade apache (CentOS).
+#yum remove httpd     #remove httpd or uninstall(CentOS).
+#apt install httpd   #install apache (Ubuntu).
+#apt update httpd    #upgrade apache (Ubuntu)
+#apt remove httpd      #uninstall apache (Ubuntu)
+#ss -tup               #List active connections to/from system
+#ss -tupl              #List internet services on a system
+#netstat -lx           #Display all active UNIX listening ports
+#ifconfig              #Display all the active interfaces details
+#ifconfig -a           #Display information of all network interfaces.
+#diff 1.txt 2.txt      #Compare the contents of two files (1.txt, 2.txt).
+#wc 1.txt              #Tells you how many lines, words, and characters there are in a file (1.txt).
+#gzip 1.txt            #Compresses file (1.txt), so that it take up much less space.
+#gunzip 1.txt          #Uncompresses file (1.txt) compressed by gzip.
+#mv 1.txt 0.txt        #Rename a file named 1.txt to 0.txt.
+#touch test.txt        #Create a empty file (test.txt)
+#tail 1.txt            #Print the last 10 lines of a file (1.txt).
+#wc -L 1.txt           #Prints the length of the longest line in a file (1.txt)
+#lspci                #Print information about usb ports, graphics cards, network adapters etc
+#diff3 1.txt 2.txt 3.txt  #Compare the contents of three files (1.txt, 2.txt, 3.txt) line by line.
+#cmp  1.txt 2.txt        #Perform byte-by-byte comparison of two files (1.txt, 2.txt).
+#cksum output.txt     #Prints the CRC checksum and byte count for the file "myfiles.txt"
+#cat 1.txt 2.txt > 0.txt  #Append contents of files (1.txt, 2.txt) into one file (0.txt)
+#sed r 1.txt 2.txt 3.txt > 0.txt   #Append contents of files (1.txt, 2.txt, 3.txt) into one file (0.txt).
+#sed h 1.txt 2.txt 3.txt > 0.txt
+#sed -n p 1.txt 2.txt 3.txt > 0.txt
+#echo "Hello world!" >> 1.txt  #Add a new line of text to an existing file (1.txt)
+echo "this is 2nd line text" >> 1.txt #Add a new line of text to an existing file (1.txt)
+echo "last line!" >> 1.txt    #Add a new line of text to an existing file (1.txt)
+#hostid                #Display host's numeric ID in hexadecimal format.
+#echo 'Hello World' > myfiles.txt   #Create a file (myfiles.txt) containing a text (Hello World).
+#find test*      #Search for files (test.txt, test1.txt, test2.txt, test.php, test.html) in a directory as well as its sub-directories
+#fdisk -l    #Gather information about file system partitions
+#grep good 1.txt   #Displays the line (good morning) in which the string (good) is found in the file (1.txt)
+#for i in {1..3}; do cat "$i.txt" >> 0.txt; done         #Append contents of files (1.txt, 2.txt, 3.txt) into one file (0.txt) using for loop.
+
+#ping google.com     #Check the network connectivity between host (your connection) and server (Google server)
+#whereis date     #Find the location of source/binary file of a command (cal).
+
+#sed -i "/tue/d" test.txt     #Deletes all the lines in the test.txt containing tue word
+*************************************************
+Shortcuts:
+| ctrl+c | Halts the current command | 
+| ctrl+z | Stops the current command | 
+| | | 
+| ctrl+d | Logout the current session | 
+| ctrl+w | Erases one word in the current line | 
+| | | 
+| ctrl+u | Erases the whole line | 
+| ctrl+r | Type to bring up a recent command |
