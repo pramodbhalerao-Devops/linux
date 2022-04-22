@@ -1,0 +1,30 @@
+It will show total and used memory
+	
+[root@NIC-TEBAELK1-AC ~]# free -m -t     it will show in MB
+[root@NIC-TEBAELK1-AC ~]# free -g -t     it will show in GB
+[root@NIC-TEBAELK1-AC ~]# top
+[root@NIC-TEBAELK1-AC ~]# sar -r   
+[root@NIC-TEBAELK1-AC ~]#telnet 192.168.7.99 8082
+[root@NIC-TEBAELK1-AC ~]#netstat -plnt   ====>for checking port open or not
+[root@NIC-TEBAELK1-AC ~]#cat /etc/services
+[root@NIC-TEBAELK1-AC ~]#cat /etc/services  > /appscan/svn/Backup/port.txt
+clear
+[root@NIC-TEBAELK1-AC ~]#netstat -tulpn | grep LISTEN
+[root@NIC-TEBAELK1-AC ~]#java -version
+[root@NIC-TEBAELK1-AC ~]#netstat -a
+[root@NIC-TEBAELK1-AC ~]#netstat -tulpn | grep LISTEN
+[root@NIC-TEBAELK1-AC ~]#netstat -a | grep connected
+[root@NIC-TEBAELK1-AC ~]#netstat -a | grep CONNECTED  > 
+[root@NIC-TEBAELK1-AC ~]#netstat -a | grep CONNECTED  > /appscan/svn/Backup/port_open_connected.txt
+[root@NIC-TEBAELK1-AC ~]#netstat -a | grep LISTENING  > /appscan/svn/Backup/port_open_listen.txt
+
+how to get size of directory or svn repository
+ 
+[root@NIC-PAPSCAN1B-AC svn]# du -hs /appscan/svn/csvn/data/repositories
+775M    /appscan/svn/csvn/data/repositories
+
+
+du -hs /datafs/svn/csvn/data/repositories/UAT
+14G
+
+du -hs /datafs/svn/csvn/data/repositories/NIC_Portal2.0
